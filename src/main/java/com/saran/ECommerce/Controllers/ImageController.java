@@ -20,10 +20,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/images/image")
-@RequiredArgsConstructor
 public class ImageController {
 
     private final IimageService imageService;
+
+    public ImageController(IimageService imageService) {
+        this.imageService = imageService;
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<ApiResponse> saveImage(@RequestParam List<MultipartFile> files,@RequestParam Long id) {

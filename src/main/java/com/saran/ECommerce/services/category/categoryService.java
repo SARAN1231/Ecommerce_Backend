@@ -11,10 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class categoryService implements IcategoryService{
 
     private final CategoryRepository categoryRepository;
+
+    public categoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     @Override
     public Category addCategory(Category category) {

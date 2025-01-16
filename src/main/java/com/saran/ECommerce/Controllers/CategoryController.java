@@ -5,6 +5,7 @@ import com.saran.ECommerce.Exceptions.ResourceNotFoundException;
 import com.saran.ECommerce.Responses.ApiResponse;
 import com.saran.ECommerce.models.Category;
 import com.saran.ECommerce.services.category.IcategoryService;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +13,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+
 @RestController
 @RequestMapping("/api/v1/category")
 public class CategoryController {
 
     private final IcategoryService categoryService;
+
+    public CategoryController(IcategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<ApiResponse> uploadCategory(Category category) {

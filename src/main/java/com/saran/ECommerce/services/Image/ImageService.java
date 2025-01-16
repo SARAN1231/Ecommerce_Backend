@@ -18,12 +18,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+
 public class ImageService implements IimageService{
 
     private final ImageRepository imageRepository;
     private final IproductService productService;
     private final ImageMapper imageMapper;
+
+    public ImageService(ImageRepository imageRepository, IproductService productService, ImageMapper imageMapper) {
+        this.imageRepository = imageRepository;
+        this.productService = productService;
+        this.imageMapper = imageMapper;
+    }
 
 
     @Override

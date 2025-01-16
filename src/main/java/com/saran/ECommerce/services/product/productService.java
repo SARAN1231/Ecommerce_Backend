@@ -15,12 +15,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+
 public class productService implements IproductService{
 
     private final  productRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
+
+    public productService(com.saran.ECommerce.Repository.productRepository productRepository, CategoryRepository categoryRepository, ProductMapper productMapper) {
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
+        this.productMapper = productMapper;
+    }
 
 
     @Override
@@ -90,27 +96,49 @@ public class productService implements IproductService{
 
     @Override
     public List<Product> getProductsByCategory(String category) {
-        return productRepository.findByCategoryName(category);
+        List<Product> products = productRepository.findByCategoryName(category);
+        if(products.isEmpty()) {
+            throw new ProductNotFoundException("Product Not Found");
+        }
+        return products;
     }
 
     @Override
     public List<Product> getProductsByBrand(String brand) {
-        return productRepository.findByBrand(brand);
+        List<Product> products =  productRepository.findByBrand(brand);
+        if(products.isEmpty()) {
+            throw new ProductNotFoundException("Product Not Found");
+        }
+        return products;
     }
 
     @Override
     public List<Product> getProductsByCategoryAndBrand(String category, String brand) {
-        return productRepository.findByCategoryNameAndBrand(category,brand);
+        List<Product> products =  productRepository.findByCategoryNameAndBrand(category,brand);
+        if(products.isEmpty()) {
+            throw new ProductNotFoundException("Product Not Found");
+        }
+        return products;
+
     }
 
     @Override
     public List<Product> getProductsByName(String productName) {
-        return productRepository.findByName(productName);
+        List<Product> products =  productRepository.findByName(productName);
+        if(products.isEmpty()) {
+            throw new ProductNotFoundException("Product Not Found");
+        }
+        return products;
+
     }
 
     @Override
     public List<Product> getProductsByBrandAndName(String brand, String productName) {
-        return productRepository.findByBrandAndName(brand,productName);
+        List<Product> products =  productRepository.findByBrandAndName(brand,productName);
+        if(products.isEmpty()) {
+            throw new ProductNotFoundException("Product Not Found");
+        }
+        return products;
     }
 
     @Override
