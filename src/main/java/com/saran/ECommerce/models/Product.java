@@ -1,5 +1,8 @@
 package com.saran.ECommerce.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +31,7 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     private List<Image> images;
 
     public Product(String name, String brand, BigDecimal price, String description, int inventory, Category category) {
@@ -39,6 +43,7 @@ public class Product {
         this.category = category;
     }
 
+    public Product(){};
     public Long getId() {
         return id;
     }

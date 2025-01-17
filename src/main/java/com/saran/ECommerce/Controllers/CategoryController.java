@@ -5,8 +5,6 @@ import com.saran.ECommerce.Exceptions.ResourceNotFoundException;
 import com.saran.ECommerce.Responses.ApiResponse;
 import com.saran.ECommerce.models.Category;
 import com.saran.ECommerce.services.category.IcategoryService;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +22,11 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<ApiResponse> uploadCategory(Category category) {
+    @PostMapping("/add-category")
+    public ResponseEntity<ApiResponse> uploadCategory(@RequestBody Category category) {
         try {
             Category category1 = categoryService.addCategory(category);
-            return new ResponseEntity<>(new ApiResponse("Upload success",category1), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponse("Upload success",category1), HttpStatus.OK);
         }
         catch(AlreadyExistsException e) {
             return new ResponseEntity<>(new ApiResponse("Upload failed",e.getMessage()), HttpStatus.CONFLICT);
@@ -57,7 +55,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/{categoryId}")
+    @GetMapping("/id/{categoryId}")
     public ResponseEntity<ApiResponse> getCategory(@PathVariable Long categoryId) {
         try {
             Category category = categoryService.getCategoryById(categoryId);
@@ -68,7 +66,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/allCategory")
+    @GetMapping("/all-category")
     public ResponseEntity<ApiResponse> getAllCategory() {
         try {
             List<Category> categories = categoryService.getAllCategories();
@@ -78,10 +76,10 @@ public class CategoryController {
             return new ResponseEntity<>(new ApiResponse("Get failed",e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/categoryName")
-    public ResponseEntity<ApiResponse> getCategoryName(String name) {
+    @GetMapping("/{categoryName}")
+    public ResponseEntity<ApiResponse> getCategoryName(@PathVariable String categoryName) {
         try{
-           Category category = categoryService.getCategoryByName(name);
+           Category category = categoryService.getCategoryByName(categoryName);
            return new ResponseEntity<>(new ApiResponse("Get success",category), HttpStatus.OK);
         }
         catch(ResourceNotFoundException e) {

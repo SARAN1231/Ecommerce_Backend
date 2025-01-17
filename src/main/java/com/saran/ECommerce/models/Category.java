@@ -1,5 +1,7 @@
 package com.saran.ECommerce.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+
 public class Category {
 
     @Id
@@ -18,11 +20,14 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category")
+
     private List<Product> products;
 
     public Category(String name) {
         this.name = name;
     }
+
+    public Category() {};
 
     public Long getId() {
         return id;

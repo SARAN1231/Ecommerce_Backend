@@ -7,8 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface IimageService {
-    Image getImageById(Long id);
-    List<ImageDto>  saveImage(List<MultipartFile> files, Long ProductId);
-    void  updateImage(MultipartFile file,Long ImageId);
-    void deleteImage(Long ImageId);
+    Image getImageById(long id);
+    List<ImageDto>  saveImage(List<MultipartFile> files, long ProductId);
+    ImageDto  updateImage(MultipartFile file,long ImageId);
+    void deleteImage(long ImageId);
 }

@@ -1,5 +1,6 @@
 package com.saran.ECommerce.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,7 @@ import java.sql.Blob;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+
 public class Image {
 
     @Id
@@ -18,18 +19,17 @@ public class Image {
     private String fileName;
     private String fileType;
 
-
-
-    @Lob
-
-    private Blob image;
+    private byte[] image;
     private String downloadUrl;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
 
-    public Blob getImage() {
+    public Image(){};
+
+    public byte[] getImage() {
         return image;
     }
 
@@ -61,7 +61,7 @@ public class Image {
         this.fileType = fileType;
     }
 
-    public void setImage(Blob image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

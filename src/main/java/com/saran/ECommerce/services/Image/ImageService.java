@@ -33,13 +33,13 @@ public class ImageService implements IimageService{
 
 
     @Override
-    public Image getImageById(Long id) {
+    public Image getImageById(long id) {
         return imageRepository.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Image not found for this id :: " + id));
     }
 
     @Override
-    public  List<ImageDto>  saveImage(List<MultipartFile> files, Long ProductId) {
+    public  List<ImageDto>  saveImage(List<MultipartFile> files, long ProductId) {
         Product product = productService.getProductById(ProductId);
         List<ImageDto> savedImages = new ArrayList<>();
         for (MultipartFile file : files) {
@@ -47,10 +47,10 @@ public class ImageService implements IimageService{
                 Image image = new Image();
                 image.setFileName(file.getOriginalFilename());
                 image.setFileType(file.getContentType());
-                image.setImage(new SerialBlob(file.getBytes()));
+                image.setImage(file.getBytes());
                 image.setProduct(product);
 
-                String builtDownloadUrl = "/api/v1/images/image/download/";
+                String builtDownloadUrl = "/api/v1/images/download/";
 
                 String downloadUrl = builtDownloadUrl + image.getId();
                 image.setDownloadUrl(downloadUrl);
@@ -61,7 +61,7 @@ public class ImageService implements IimageService{
 
                 savedImages.add(imageMapper.toImageDto(savedImage));
             }
-            catch (IOException | SQLException e) {
+            catch (IOException  e) {
                 throw new RuntimeException(e.getMessage());
             }
         }
@@ -71,21 +71,22 @@ public class ImageService implements IimageService{
 
 
     @Override
-    public void updateImage(MultipartFile file, Long ImageId) {
+    public ImageDto updateImage( MultipartFile file, long ImageId) {
         Image image = getImageById(ImageId);
         try{
             image.setFileName(file.getOriginalFilename());
             image.setFileType(file.getContentType());
-            image.setImage(new SerialBlob(file.getBytes())); // converting multipart file type to blob type
-            imageRepository.save(image);
+            image.setImage(file.getBytes()); // converting multipart file type to blob type
+            Image updatedImage = imageRepository.save(image);
+            return imageMapper.toImageDto(updatedImage);
         }
-        catch(IOException | SQLException e){
+        catch(IOException e){
             throw new RuntimeException(e.getMessage());
         }
     }
 
     @Override
-    public void deleteImage(Long ImageId) {
+    public void deleteImage(long ImageId) {
         Image image = getImageById(ImageId);
         if(image != null){
             imageRepository.delete(image);
